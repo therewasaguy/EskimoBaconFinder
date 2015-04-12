@@ -21,23 +21,23 @@
 				class="style-button style-color-pink">Scan Beacons</div>
 			<div id="id-screen-home-button-range-beacons"
 				class="style-button style-color-purple">Range Beacons</div>
-			<div id="id-screen-home-button-monitor-regions"
+<!-- 			<div id="id-screen-home-button-monitor-regions"
 				class="style-button style-color-pink">Monitor Regions</div>
 			<div id="id-screen-home-button-range-nearables"
 				class="style-button style-color-purple">Range Nearables</div>
 			<div id="id-screen-home-button-monitor-nearables"
 				class="style-button style-color-pink">Monitor Nearables</div>
 			<div id="id-screen-home-button-trigger-nearables"
-				class="style-button style-color-purple">Nearable Trigger</div>
+				class="style-button style-color-purple">Nearable Trigger</div> -->
 			<!--
 				This button displays a screen where you can connect
 				to Evothings Workbench and use live coding to develop
 				HTML/JavaScript code with a fast workflow. Just set the
 				style to "display:none" if you don't want it in the app.
 			-->
-			<div id="id-screen-home-button-live-development"
+<!-- 			<div id="id-screen-home-button-live-development"
 				class="style-button style-color-ice"
-				style="display:block;">Live Coding</div>
+				style="display:block;">Live Coding</div> -->
 		</div>
 
 		<div id="id-screen-scan-beacons" class="style-screen">
@@ -52,7 +52,7 @@
 			<div class="style-item-list"></div>
 		</div>
 
-		<div id="id-screen-monitor-regions" class="style-screen">
+<!-- 		<div id="id-screen-monitor-regions" class="style-screen">
 			<div class="style-heading-small style-color-purple">Monitor Regions</div>
 			<div class="style-button-back style-color-blueberry">Back</div>
 			<div class="style-item-list"></div>
@@ -80,9 +80,9 @@
 			<p>You can change the
 			type of Sticker used and the trigger logic in the source code file:
 			js/screen-trigger-nearables.js</p></div>
-		</div>
+		</div> -->
 
-		<div id="id-screen-live-development" class="style-screen">
+<!-- 		<div id="id-screen-live-development" class="style-screen">
 			<div class="style-heading-small style-color-purple">Live Coding</div>
 			<div class="style-button-back style-color-blueberry">Back</div>
 			<div><input id="id-screen-live-development-connect-url" type="url" class="connect-address" /></div>
@@ -101,7 +101,7 @@
 			you get automatic reload when you save a code file.</p>
 			<p>Make sure your computer and phone/tablet are on a WiFi network
 			that allows connections (client isolation must be off).</p></div>
-		</div>
+		</div> -->
 
 		<script src="cordova.js"></script>
 		<script src="js/lib/jquery-2.1.1.min.js"></script>
@@ -109,12 +109,13 @@
 		<script src="js/app.js"></script>
 		<script src="js/screen-scan-beacons.js"></script>
 		<script src="js/screen-range-beacons.js"></script>
-		<script src="js/screen-monitor-regions.js"></script>
+
+<!-- 		<script src="js/screen-monitor-regions.js"></script>
 		<script src="js/screen-range-nearables.js"></script>
 		<script src="js/screen-monitor-nearables.js"></script>
 		<script src="js/screen-trigger-nearables.js"></script>
 		<script src="js/screen-live-development.js"></script>
-		<script>
+ -->		<script>
 		// Hide back button if we referrer is empty.
 		var hasReferrer = document.referrer && document.referrer != '';
 		if (!hasReferrer)
@@ -132,21 +133,22 @@
 		evothings.touch.onTap(
 			$('#id-screen-home-button-range-beacons')[0],
 			app.startRangingBeacons);
-		evothings.touch.onTap(
-			$('#id-screen-home-button-monitor-regions')[0],
-			app.startMonitoringRegions);
-		evothings.touch.onTap(
-			$('#id-screen-home-button-range-nearables')[0],
-			app.startRangingNearables);
-		evothings.touch.onTap(
-			$('#id-screen-home-button-monitor-nearables')[0],
-			app.startMonitoringNearables);
-		evothings.touch.onTap(
-			$('#id-screen-home-button-trigger-nearables')[0],
-			app.startMonitoringNearableTrigger);
-		evothings.touch.onTap(
-			$('#id-screen-home-button-live-development')[0],
-			app.showLiveDevelopmentScreen);
+
+		// evothings.touch.onTap(
+		// 	$('#id-screen-home-button-monitor-regions')[0],
+		// 	app.startMonitoringRegions);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-home-button-range-nearables')[0],
+		// 	app.startRangingNearables);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-home-button-monitor-nearables')[0],
+		// 	app.startMonitoringNearables);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-home-button-trigger-nearables')[0],
+		// 	app.startMonitoringNearableTrigger);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-home-button-live-development')[0],
+		// 	app.showLiveDevelopmentScreen);
 
 		// Back buttons on each screen.
 		evothings.touch.onTap(
@@ -155,38 +157,39 @@
 		evothings.touch.onTap(
 			$('#id-screen-range-beacons div.style-button-back')[0],
 			app.stopRangingBeacons);
-		evothings.touch.onTap(
-			$('#id-screen-monitor-regions div.style-button-back')[0],
-			app.stopMonitoringRegions);
-		evothings.touch.onTap(
-			$('#id-screen-range-nearables div.style-button-back')[0],
-			app.stopRangingNearables);
-		evothings.touch.onTap(
-			$('#id-screen-monitor-nearables div.style-button-back')[0],
-			app.stopMonitoringNearables);
-		evothings.touch.onTap(
-			$('#id-screen-trigger-nearables div.style-button-back')[0],
-			app.stopMonitoringNearableTrigger);
-		evothings.touch.onTap(
-			$('#id-screen-live-development div.style-button-back')[0],
-			app.showHomeScreen);
 
-		// Connect button on Live Coding screen.
-		evothings.touch.onTap(
-			$('#id-screen-live-development-button-connect')[0],
-			app.connectToEvothingsWorkbench);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-monitor-regions div.style-button-back')[0],
+		// 	app.stopMonitoringRegions);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-range-nearables div.style-button-back')[0],
+		// 	app.stopRangingNearables);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-monitor-nearables div.style-button-back')[0],
+		// 	app.stopMonitoringNearables);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-trigger-nearables div.style-button-back')[0],
+		// 	app.stopMonitoringNearableTrigger);
+		// evothings.touch.onTap(
+		// 	$('#id-screen-live-development div.style-button-back')[0],
+		// 	app.showHomeScreen);
+
+		// // Connect button on Live Coding screen.
+		// evothings.touch.onTap(
+		// 	$('#id-screen-live-development-button-connect')[0],
+		// 	app.connectToEvothingsWorkbench);
 
 		// Hide buttons on Android.
-		var isAndroid =
-			navigator.userAgent.match(/Android/) ||
-			navigator.userAgent.match(/android/);
-		if (isAndroid)
-		{
-      		$('#id-screen-home-button-scan-beacons').hide();
-      		$('#id-screen-home-button-range-nearables').hide();
-      		$('#id-screen-home-button-monitor-nearables').hide();
-      		$('#id-screen-home-button-trigger-nearables').hide();
-      	}
+		// var isAndroid =
+		// 	navigator.userAgent.match(/Android/) ||
+		// 	navigator.userAgent.match(/android/);
+		// if (isAndroid)
+		// {
+  //     		$('#id-screen-home-button-scan-beacons').hide();
+  //     		$('#id-screen-home-button-range-nearables').hide();
+  //     		$('#id-screen-home-button-monitor-nearables').hide();
+  //     		$('#id-screen-home-button-trigger-nearables').hide();
+  //     	}
 		</script>
 
 	</body>
