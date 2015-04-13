@@ -10,17 +10,25 @@
 		<script>
 		if (window.hyper) { console.log = hyper.log; }
 		</script>
+
+		<script src="js/lib/p5.js"></script>
+		<script src="js/lib/p5.sound.js"></script>
+
 	</head>
 	<body>
 
 		<div id="id-screen-home" class="style-screen">
-			<div class="style-heading-big style-color-purple">Beacon Finder</div>
+			<div class="style-heading-big style-color-purple">Bacon Finder</div>
 			<div id="id-screen-home-button-back"
 				class="style-button-back style-color-blueberry">Back</div>
 			<div id="id-screen-home-button-scan-beacons"
-				class="style-button style-color-pink">Scan Beacons</div>
+				class="style-button style-color-pink">Scan Bacons</div>
 			<div id="id-screen-home-button-range-beacons"
-				class="style-button style-color-purple">Range Beacons</div>
+				class="style-button style-color-purple">Range Bacons</div>
+
+			<div id="id-screen-home-button-p5-sketch"
+				class="style-button style-color-pink">p5 sketch</div>
+
 		</div>
 
 		<div id="id-screen-scan-beacons" class="style-screen">
@@ -35,12 +43,22 @@
 			<div class="style-item-list"></div>
 		</div>
 
+		<div id="id-screen-p5-sketch" class="style-screen">
+			<div class="style-heading-small style-color-purple">p5 Sketch</div>
+			<div class="style-button-back style-color-blueberry">Back</div>
+			<div class="style-item-list">
+				<div id="p5CanvasDiv"></div>
+			</div>
+		</div>
+
 		<script src="cordova.js"></script>
 		<script src="js/lib/jquery-2.1.1.min.js"></script>
 		<script src="js/lib/touch.js"></script>
+
 		<script src="js/app.js"></script>
 		<script src="js/screen-scan-beacons.js"></script>
 		<script src="js/screen-range-beacons.js"></script>
+		<script src="js/screen-p5-sketch.js"></script>
 
 		<script>
 		// Hide back button if we referrer is empty.
@@ -60,6 +78,10 @@
 		evothings.touch.onTap(
 			$('#id-screen-home-button-range-beacons')[0],
 			app.startRangingBeacons);
+		evothings.touch.onTap(
+			$('#id-screen-home-button-p5-sketch')[0],
+			app.startp5Sketch);
+
 
 		// Back buttons on each screen.
 		evothings.touch.onTap(
@@ -67,6 +89,9 @@
 			app.stopScanningBeacons);
 		evothings.touch.onTap(
 			$('#id-screen-range-beacons div.style-button-back')[0],
+			app.stopRangingBeacons);
+		evothings.touch.onTap(
+			$('#id-screen-p5-sketch div.style-button-back')[0],
 			app.stopRangingBeacons);
 
 		// Hide buttons on Android.
@@ -80,6 +105,134 @@
   //     		$('#id-screen-home-button-monitor-nearables').hide();
   //     		$('#id-screen-home-button-trigger-nearables').hide();
   //     	}
+
+	/* ------------ p5 --------------- */
+  // lightBlue = color 2
+  // green = color 1
+  // blue = color 3
+
+  // set initial locations of estimotes
+  var orig = {
+
+    // green
+    "1" : {
+      "x" : 0.501,
+      "y" : .903,
+      "color": [0,255,200]
+    },
+
+    // light blue
+    // "2" : {
+    //   "x" : 0.01,
+    //   "y" : 0.001,
+    //   "color" : [173, 216, 230]
+    // },
+
+    // dark blue
+    "3" : {
+      "x" : 0.9,
+      "y" : 0.012,
+      "color" : [0,0,205]
+    }
+  };
+
+  // this variable holds distances of estimotes, like distances['1'].x distances['1'].y
+	var distances = {};
+
+	var myLocation = {};
+	var myPrevLocation = {};
+
+  var cnv;
+
+  var osc1;
+  var mod1, mod2;
+  var delay;
+
+	function setup() {
+		cnv = createCanvas(windowWidth,windowHeight/2);
+		cnv.parent( document.getElementById('p5CanvasDiv') );
+
+		background(255,255,0);
+
+		osc1 = new p5.SqrOsc();
+		osc1.freq(200);
+
+		del = new p5.Delay();
+		osc1.disconnect();
+		del.amp(1);
+		del.connect();
+		osc1.start();
+		del.process(osc1);
+		del.feedback(0.9);
+		del.delayTime(800/44100);
+		del.filter(20000);
+
+		mod1 = new p5.Oscillator();
+		mod1.start();
+		mod1.disconnect();
+		osc1.amp(mod1);
+
+	}
+
+	function draw() {
+		background(255,255,255, 100);
+
+		for (var i = 1; i <= 3; i++) {
+			var eskmo = orig[String(i)];
+			var x = eskmo.x;
+			var y = eskmo.y;
+			x = map(x, 0, 1, width/4, width/4*3);
+			y = map(y, 0, 1, height/4, height/4*3);
+
+			fill(eskmo.color[0], eskmo.color[1], eskmo.color[2]);
+			ellipse(x, y, 5, 5);
+		}
+
+		if ( typeof(myLocation.x) !== 'undefined' && !isNaN(myLocation.x) && !isNaN(myLocation.y) ) {
+			var myX = map(myLocation.x, -1, 1, width/4, width/4*3);
+			var myY = map(myLocation.y, -1, 1, height/4*3, height/4); //flipped?
+
+			// if (typeof(myPrevLocation.x) !== 'undefined') {
+			// 	myX = myX * myPrevLocation.x / 2;
+			// 	myY = myY * myPrevLocation.y / 2;
+			// }
+
+			// myPrevLocation = {"x" : myX, "y": myY};
+
+			fill(0,0,0);
+			ellipse(myX, myY, 10, 10);
+
+			// mod1.freq(map(myY, 0, width/2, 0, 20));
+
+			// del.delayTime(map(myX, 0, width/2, 0, .0001));
+
+
+			if (distances["1"] && !isNaN(distances["1"])) {
+				var filterFreq = map(distances["1"], 0, 1, 400, 8000);
+				del.filter(filterFreq);
+				console.log('bang');
+			}
+
+			if (distances["2"] && !isNaN(distances["2"])) {
+				var modFreq = map(distances["2"], 0, 1, 0.01, 12);
+				mod1.freq(modFreq);
+			}
+
+
+			if (distances["3"] && !isNaN(distances["3"])) {
+				var dt = map(distances["3"], 0, 1, 0, .0001)
+				del.delayTime(dt);
+			}
+
+		}
+
+		console.log(myX, myY);
+	}
+
+	function drawP5() {
+		app.showScreen('id-screen-p5-sketch');
+	}
+
 		</script>
 
 	</body>

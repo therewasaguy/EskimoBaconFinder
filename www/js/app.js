@@ -24,7 +24,7 @@ var app = (function()
 	function onDeviceReady()
 	{
 		// TODO: Add functionality if needed.
-		hyper.log('onDeviceReady')
+		hyper.log('onDeviceReady');
 	}
 
 	// ------------- Application functions ------------- //
